@@ -56,6 +56,8 @@ def target_req(url, station, target):
                    
 if __name__ == "__main__":
     url = 'https://szgj.2500.tv/api/v1/busline/bus?line_guid=0000000000LINELINEINFO18082357212871'
+    url2 = 'https://szgj.2500.tv/notice/layui/layui.js'
+    url3 = 'https://szgj.2500.tv/api/v1/busline/bus?line_guid=1aa773c8-e865-4847-95a1-f4c956ae02ef'
     station = {
 'f1822311-fcae-4814-a4c6-d76a6de6489a': '独墅湖邻里中心公交首末站',
 '4e0cc991-5c16-4c11-a66d-0e39f1d4af12': '独墅湖邻里中心北',
@@ -148,6 +150,22 @@ if __name__ == "__main__":
     #    time.sleep(30)
     #   
     #target  = 24
-    target  = 12
-    target_req(url=url, station=station2, target=target) 
-    
+    #target  = 12
+    #target_req(url=url, station=station2, target=target) 
+    businfo = requests.get(url3)
+    businfo_json    = json.loads(businfo.text)
+    buses = businfo_json['data']['standInfo']
+    print(buses)
+
+    target_station  = 29
+
+    for i in buses:
+        if len(buses[i]) == 0:
+            continue 
+
+        info    = buses[i][0]
+        serial = int(info['serial'])
+        gap = target_station - serial
+        print(gap)
+
+
